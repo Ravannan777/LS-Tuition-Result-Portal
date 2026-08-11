@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .admin-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            margin-bottom: 4px;
+            color: #666;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h2>Admin Result Upload</h2>
+        <form id="resultForm">
+            <!-- ക്ലാസ് സെലക്ട് ചെയ്യാനുള്ള ബോക്സ് -->
+            <div class="form-group">
+                <label for="studentClass">Class Select ചെയ്യുക:</label>
+                <select id="studentClass" required>
+                    <option value="">-- ക്ലാസ് തിരഞ്ഞെടുക്കുക --</option>
+                    <option value="class7_results">Class 7</option>
+                    <option value="class8_results">Class 8</option>
+                    <option value="class9_results">Class 9</option>
+                    <option value="class10_results">Class 10</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="rollNumber">Roll Number:</label>
+                <input type="text" id="rollNumber" required placeholder="ഉദാഹരണത്തിന്: 1">
+            </div>
+            <div class="form-group">
+                <label for="name">Student Name:</label>
+                <input type="text" id="name" required placeholder="കുട്ടിയുടെ പേര്">
+            </div>
+            
+            <!-- വിഷയങ്ങൾ -->
+            <div class="form-group">
+                <label for="malayalam">മലയാളം (Malayalam):</label>
+                <input type="text" id="malayalam" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="english">ഇംഗ്ലീഷ് (English):</label>
+                <input type="text" id="english" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="hindi">ഹിന്ദി (Hindi):</label>
+                <input type="text" id="hindi" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="maths">ഗണിതം (Maths):</label>
+                <input type="text" id="maths" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="physics">ഫിസിക്സ് (Physics):</label>
+                <input type="text" id="physics" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="chemistry">കെമിസ്ട്രി (Chemistry):</label>
+                <input type="text" id="chemistry" placeholder="മാർക്ക് നൽകുക">
+            </div>
+
+            <button type="submit">Upload Result</button>
+        </form>
+    </div>
+
+    <!-- Firebase SDK & Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_hjdAHD11DPLXGC-wC1sltAAlunrG1XE",
+            authDomain: "ls-tuition.firebaseapp.com",
+            projectId: "ls-tuition",
+            storageBucket: "ls-tuition.firebasestorage.app",
+            messagingSenderId: "436382812973",
+            appId: "1:436382812973:web:1539769f23e03f22cca1a4",
+            measurementId: "G-NVXR2KJ5F8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const form = document.getElementById('resultForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const selectedClass = document.getElementById('studentClass').value;
+            const rollNumber = document.getElementById('rollNumber').value.trim();
+            const name = document.getElementById('name').value.trim().toLowerCase();
+            const malayalam = document.getElementById('malayalam').value.trim();
+            const english = document.getElementById('english').value.trim();
+            const hindi = document.getElementById('hindi').value.trim();
+            const maths = document.getElementById('maths').value.trim();
+            const physics = document.getElementById('physics').value.trim();
+            const chemistry = document.getElementById('chemistry').value.trim();
+
+            try {
+                await addDoc(collection(db, selectedClass), {
+                    rollNumber: rollNumber,
+                    name: name,
+                    malayalam: malayalam,
+                    english: english,
+                    hindi: hindi,
+                    maths: maths,
+                    physics: physics,
+                    chemistry: chemistry
+                });
+                alert('റിസൾട്ട് വിജയകരമായി അപ്‌ലോഡ് ചെയ്തു! 🎉');
+                form.reset();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert('എറർ വന്നിട്ടുണ്ട്, ഒന്നിുകൂടി നോക്കുക.');
+            }
+        });
+    </script>
+</body>
+</html>
