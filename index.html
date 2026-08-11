@@ -149,6 +149,9 @@
             const maths = document.getElementById('maths').value.trim();
             const physics = document.getElementById('physics').value.trim();
             const chemistry = document.getElementById('chemistry').value.trim();
+            const chemistry = document.getElementById('malayalm 2').value.trim();
+            const chemistry = document.getElementById('social').value.trim();
+            const chemistry = document.getElementById('biology').value.trim():
 
             try {
                 await addDoc(collection(db, selectedClass), {
@@ -159,7 +162,11 @@
                     hindi: hindi,
                     maths: maths,
                     physics: physics,
-                    chemistry: chemistry
+                    chemistry: chemistry,
+                    malayalm: malayalm ,
+                    sociol: soiol,
+                    biology: biology
+                
                 });
                 alert('റിസൾട്ട് വിജയകരമായി അപ്‌ലോഡ് ചെയ്തു! 🎉');
                 form.reset();
