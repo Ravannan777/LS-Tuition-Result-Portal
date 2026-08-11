@@ -90,8 +90,12 @@
             
             <!-- വിഷയങ്ങൾ -->
             <div class="form-group">
-                <label for="malayalam">മലയാളം (Malayalam):</label>
-                <input type="text" id="malayalam" placeholder="മാർക്ക് നൽകുക">
+                <label for="malayalam1">മലയാളം പാർട്ട് 1 (Malayalam Part 1):</label>
+                <input type="text" id="malayalam1" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="malayalam2">മലയാളം പാർട്ട് 2 (Malayalam Part 2):</label>
+                <input type="text" id="malayalam2" placeholder="മാർക്ക് നൽകുക">
             </div>
             <div class="form-group">
                 <label for="english">ഇംഗ്ലീഷ് (English):</label>
@@ -112,6 +116,14 @@
             <div class="form-group">
                 <label for="chemistry">കെമിസ്ട്രി (Chemistry):</label>
                 <input type="text" id="chemistry" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="socialScience">സോഷ്യൽ സയൻസ് (Social Science):</label>
+                <input type="text" id="socialScience" placeholder="മാർക്ക് നൽകുക">
+            </div>
+            <div class="form-group">
+                <label for="biology">ബയോളജി (Biology):</label>
+                <input type="text" id="biology" placeholder="മാർക്ക് നൽകുക">
             </div>
 
             <button type="submit">Upload Result</button>
@@ -143,30 +155,29 @@
             const selectedClass = document.getElementById('studentClass').value;
             const rollNumber = document.getElementById('rollNumber').value.trim();
             const name = document.getElementById('name').value.trim().toLowerCase();
-            const malayalam = document.getElementById('malayalam').value.trim();
+            const malayalam1 = document.getElementById('malayalam1').value.trim();
+            const malayalam2 = document.getElementById('malayalam2').value.trim();
             const english = document.getElementById('english').value.trim();
             const hindi = document.getElementById('hindi').value.trim();
             const maths = document.getElementById('maths').value.trim();
             const physics = document.getElementById('physics').value.trim();
             const chemistry = document.getElementById('chemistry').value.trim();
-            const chemistry = document.getElementById('malayalm 2').value.trim();
-            const chemistry = document.getElementById('social').value.trim();
-            const chemistry = document.getElementById('biology').value.trim():
+            const socialScience = document.getElementById('socialScience').value.trim();
+            const biology = document.getElementById('biology').value.trim();
 
             try {
                 await addDoc(collection(db, selectedClass), {
                     rollNumber: rollNumber,
                     name: name,
-                    malayalam: malayalam,
+                    malayalam1: malayalam1,
+                    malayalam2: malayalam2,
                     english: english,
                     hindi: hindi,
                     maths: maths,
                     physics: physics,
                     chemistry: chemistry,
-                    malayalm: malayalm ,
-                    sociol: soiol,
+                    socialScience: socialScience,
                     biology: biology
-                
                 });
                 alert('റിസൾട്ട് വിജയകരമായി അപ്‌ലോഡ് ചെയ്തു! 🎉');
                 form.reset();
