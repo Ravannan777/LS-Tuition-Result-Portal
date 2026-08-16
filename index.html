@@ -1,191 +1,465 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result Admin Panel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .admin-card {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        label {
-            display: block;
-            margin-bottom: 4px;
-            color: #666;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LS Tuition — Result Admin</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manjari:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d1b2e;
+    --ink-soft:#1c2c44;
+    --parchment:#faf6ec;
+    --parchment-2:#f2ead6;
+    --gold:#c8992e;
+    --gold-deep:#9c7419;
+    --gold-bright:#e6bd5a;
+    --line:#e3d8b8;
+    --text:#2b2620;
+    --text-soft:#6b6250;
+    --ok:#3f7d58;
+    --err:#a83c3c;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, #16263e 0%, transparent 45%),
+      radial-gradient(circle at 85% 90%, #16263e 0%, transparent 45%),
+      var(--ink);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:36px 16px 60px;
+  }
+
+  /* ---- Header / crest ---- */
+  .brand{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    margin-bottom:28px;
+  }
+  .brand img{
+    width:74px;height:74px;
+    object-fit:contain;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
+  }
+  .brand h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:700;
+    font-size:32px;
+    letter-spacing:.5px;
+    color:var(--gold-bright);
+    margin:10px 0 2px;
+  }
+  .brand .tagline{
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:#8b98ad;
+    font-weight:600;
+  }
+  .brand .panel-label{
+    margin-top:14px;
+    font-size:13px;
+    color:#c9d2e0;
+    background:rgba(200,153,46,.12);
+    border:1px solid rgba(200,153,46,.35);
+    padding:5px 16px;
+    border-radius:999px;
+    letter-spacing:.5px;
+  }
+
+  /* ---- Card ---- */
+  .sheet{
+    width:100%;
+    max-width:640px;
+    background:var(--parchment);
+    border-radius:var(--radius);
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.55), 0 2px 0 rgba(255,255,255,.04) inset;
+    overflow:hidden;
+    border:1px solid rgba(200,153,46,.25);
+  }
+  .sheet-top{
+    height:6px;
+    background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright),var(--gold-deep));
+  }
+  .sheet-inner{padding:30px 28px 26px;}
+
+  .section-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:19px;
+    font-weight:700;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 14px;
+  }
+  .section-title::before{
+    content:"";
+    width:16px;height:2px;
+    background:var(--gold);
+    display:inline-block;
+  }
+  .section-title:not(:first-child){margin-top:26px;}
+
+  /* ---- Ticket row (class / roll / name) ---- */
+  .ticket{
+    display:grid;
+    grid-template-columns:1.1fr 0.8fr 1.4fr;
+    gap:12px;
+    background:var(--parchment-2);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px;
+  }
+  @media (max-width:520px){
+    .ticket{grid-template-columns:1fr;}
+  }
+
+  .field label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    font-weight:700;
+    color:var(--text-soft);
+    margin-bottom:6px;
+  }
+  .field input, .field select{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    color:var(--text);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 11px;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .field input::placeholder{color:#b6ac95;}
+  .field input:focus, .field select:focus{
+    outline:none;
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(200,153,46,.18);
+  }
+
+  /* ---- Marks ledger ---- */
+  .ledger{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 14px;
+    margin-top:14px;
+  }
+  @media (max-width:520px){
+    .ledger{grid-template-columns:1fr;}
+  }
+  .mark-row{
+    display:grid;
+    grid-template-columns:1fr 78px;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:8px 10px 8px 14px;
+  }
+  .mark-row .subj{
+    font-size:13.5px;
+    font-family:'Manjari','Inter',sans-serif;
+    color:var(--text);
+    line-height:1.3;
+  }
+  .mark-row .subj small{
+    display:block;
+    font-size:10.5px;
+    color:var(--text-soft);
+    letter-spacing:.3px;
+  }
+  .mark-row input{
+    width:100%;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    font-size:14px;
+    text-align:center;
+    color:var(--ink);
+    background:var(--parchment-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:7px 4px;
+  }
+  .mark-row input:focus{
+    outline:none;
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(200,153,46,.18);
+  }
+  .mark-row:focus-within{border-color:var(--gold-deep);}
+  .mark-row.is-hidden{display:none;}
+
+  .class-hint{
+    margin:10px 2px 0;
+    font-size:11.5px;
+    color:var(--text-soft);
+    letter-spacing:.2px;
+  }
+
+  /* ---- Submit ---- */
+  button.submit{
+    width:100%;
+    margin-top:26px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-family:'Inter',sans-serif;
+    font-size:15.5px;
+    font-weight:700;
+    letter-spacing:.3px;
+    color:#241a05;
+    background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+    cursor:pointer;
+    box-shadow:0 8px 20px -8px rgba(156,116,25,.7);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  button.submit:hover{transform:translateY(-1px); box-shadow:0 12px 24px -8px rgba(156,116,25,.8);}
+  button.submit:active{transform:translateY(0);}
+  button.submit:disabled{opacity:.6; cursor:not-allowed; transform:none;}
+
+  footer{
+    margin-top:26px;
+    text-align:center;
+    color:#5c6a82;
+    font-size:12px;
+    letter-spacing:.3px;
+  }
+
+  /* ---- Toast ---- */
+  #toast{
+    position:fixed;
+    left:50%;
+    bottom:26px;
+    transform:translate(-50%,20px);
+    min-width:260px;
+    max-width:90vw;
+    background:var(--ink);
+    color:#f4ead0;
+    border:1px solid rgba(200,153,46,.4);
+    padding:14px 18px;
+    border-radius:10px;
+    font-size:14px;
+    box-shadow:0 14px 30px -10px rgba(0,0,0,.6);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  #toast.show{opacity:1; transform:translate(-50%,0); pointer-events:auto;}
+  #toast.ok{border-color:rgba(63,125,88,.6);}
+  #toast.err{border-color:rgba(168,60,60,.6);}
+  #toast .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none;}
+  #toast.ok .dot{background:var(--ok);}
+  #toast.err .dot{background:var(--err);}
+</style>
 </head>
 <body>
 
-    <div class="admin-card">
-        <h2>Admin Result Upload</h2>
-        <form id="resultForm">
-            <!-- ക്ലാസ് സെലക്ട് ചെയ്യാനുള്ള ബോക്സ് -->
-            <div class="form-group">
-                <label for="studentClass">Class Select ചെയ്യുക:</label>
-                <select id="studentClass" required>
-                    <option value="">-- ക്ലാസ് തിരഞ്ഞെടുക്കുക --</option>
-                    <option value="class7_results">Class 7</option>
-                    <option value="class8_results">Class 8</option>
-                    <option value="class9_results">Class 9</option>
-                    <option value="class10_results">Class 10</option>
-                </select>
-            </div>
+  <div class="brand">
+    <img src="logo.png" alt="LS Tuition crest">
+    <h1>LS Tuition</h1>
+    <div class="tagline">Inspiring Success, Shaping Futures</div>
+    <div class="panel-label">Result Admin Panel</div>
+  </div>
 
-            <div class="form-group">
-                <label for="rollNumber">Roll Number:</label>
-                <input type="text" id="rollNumber" required placeholder="ഉദാഹരണത്തിന്: 1">
-            </div>
-            <div class="form-group">
-                <label for="name">Student Name:</label>
-                <input type="text" id="name" required placeholder="കുട്ടിയുടെ പേര്">
-            </div>
-            
-            <!-- വിഷയങ്ങൾ -->
-            <div class="form-group">
-                <label for="malayalam1">മലയാളം പാർട്ട് 1 (Malayalam Part 1):</label>
-                <input type="text" id="malayalam1" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="malayalam2">മലയാളം പാർട്ട് 2 (Malayalam Part 2):</label>
-                <input type="text" id="malayalam2" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="english">ഇംഗ്ലീഷ് (English):</label>
-                <input type="text" id="english" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="hindi">ഹിന്ദി (Hindi):</label>
-                <input type="text" id="hindi" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="maths">ഗണിതം (Maths):</label>
-                <input type="text" id="maths" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="physics">ഫിസിക്സ് (Physics):</label>
-                <input type="text" id="physics" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="chemistry">കെമിസ്ട്രി (Chemistry):</label>
-                <input type="text" id="chemistry" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="socialScience">സോഷ്യൽ സയൻസ് (Social Science):</label>
-                <input type="text" id="socialScience" placeholder="മാർക്ക് നൽകുക">
-            </div>
-            <div class="form-group">
-                <label for="biology">ബയോളജി (Biology):</label>
-                <input type="text" id="biology" placeholder="മാർക്ക് നൽകുക">
-            </div>
+  <div class="sheet">
+    <div class="sheet-top"></div>
+    <div class="sheet-inner">
+      <form id="resultForm">
 
-            <button type="submit">Upload Result</button>
-        </form>
+        <h2 class="section-title">Student Details</h2>
+        <div class="ticket">
+          <div class="field">
+            <label for="studentClass">Class</label>
+            <select id="studentClass" required>
+              <option value="">തിരഞ്ഞെടുക്കുക</option>
+              <option value="class7_results">Class 7</option>
+              <option value="class8_results">Class 8</option>
+              <option value="class9_results">Class 9</option>
+              <option value="class10_results">Class 10</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rollNumber">Roll No.</label>
+            <input type="text" id="rollNumber" required placeholder="1">
+          </div>
+          <div class="field">
+            <label for="name">Student Name</label>
+            <input type="text" id="name" required placeholder="കുട്ടിയുടെ പേര്">
+          </div>
+        </div>
+
+        <h2 class="section-title">Marks</h2>
+        <div class="ledger">
+          <div class="mark-row">
+            <div class="subj">മലയാളം I<small>Malayalam Part 1</small></div>
+            <input type="text" id="malayalam1" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row">
+            <div class="subj">മലയാളം II<small>Malayalam Part 2</small></div>
+            <input type="text" id="malayalam2" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row">
+            <div class="subj">ഇംഗ്ലീഷ്<small>English</small></div>
+            <input type="text" id="english" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row">
+            <div class="subj">ഹിന്ദി<small>Hindi</small></div>
+            <input type="text" id="hindi" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row">
+            <div class="subj">ഗണിതം<small>Maths</small></div>
+            <input type="text" id="maths" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row" data-subject-for="8,9,10">
+            <div class="subj">ഫിസിക്സ്<small>Physics</small></div>
+            <input type="text" id="physics" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row" data-subject-for="8,9,10">
+            <div class="subj">കെമിസ്ട്രി<small>Chemistry</small></div>
+            <input type="text" id="chemistry" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row" data-subject-for="7,8,9,10">
+            <div class="subj">സോഷ്യൽ സയൻസ്<small>Social Science</small></div>
+            <input type="text" id="socialScience" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row" data-subject-for="8,9,10">
+            <div class="subj">ബയോളജി<small>Biology</small></div>
+            <input type="text" id="biology" inputmode="numeric" placeholder="—">
+          </div>
+          <div class="mark-row" data-subject-for="7">
+            <div class="subj">സയൻസ്<small>Science</small></div>
+            <input type="text" id="science" inputmode="numeric" placeholder="—">
+          </div>
+        </div>
+        <p id="classHint" class="class-hint">ക്ലാസ് തിരഞ്ഞെടുക്കുമ്പോൾ അതിനുള്ള വിഷയങ്ങൾ മാത്രം കാണിക്കും.</p>
+
+        <button type="submit" class="submit" id="submitBtn">Upload Result</button>
+      </form>
     </div>
+  </div>
 
-    <!-- Firebase SDK & Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <footer>© LS Tuition — Result records are stored securely on Firebase</footer>
+  <div id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC_hjdAHD11DPLXGC-wC1sltAAlunrG1XE",
-            authDomain: "ls-tuition.firebaseapp.com",
-            projectId: "ls-tuition",
-            storageBucket: "ls-tuition.firebasestorage.app",
-            messagingSenderId: "436382812973",
-            appId: "1:436382812973:web:1539769f23e03f22cca1a4",
-            measurementId: "G-NVXR2KJ5F8"
-        };
+  <!-- Firebase SDK & Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_hjdAHD11DPLXGC-wC1sltAAlunrG1XE",
+      authDomain: "ls-tuition.firebaseapp.com",
+      projectId: "ls-tuition",
+      storageBucket: "ls-tuition.firebasestorage.app",
+      messagingSenderId: "436382812973",
+      appId: "1:436382812973:web:1539769f23e03f22cca1a4",
+      measurementId: "G-NVXR2KJ5F8"
+    };
 
-        const form = document.getElementById('resultForm');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const selectedClass = document.getElementById('studentClass').value;
-            const rollNumber = document.getElementById('rollNumber').value.trim();
-            const name = document.getElementById('name').value.trim().toLowerCase();
-            const malayalam1 = document.getElementById('malayalam1').value.trim();
-            const malayalam2 = document.getElementById('malayalam2').value.trim();
-            const english = document.getElementById('english').value.trim();
-            const hindi = document.getElementById('hindi').value.trim();
-            const maths = document.getElementById('maths').value.trim();
-            const physics = document.getElementById('physics').value.trim();
-            const chemistry = document.getElementById('chemistry').value.trim();
-            const socialScience = document.getElementById('socialScience').value.trim();
-            const biology = document.getElementById('biology').value.trim();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-            try {
-                await addDoc(collection(db, selectedClass), {
-                    rollNumber: rollNumber,
-                    name: name,
-                    malayalam1: malayalam1,
-                    malayalam2: malayalam2,
-                    english: english,
-                    hindi: hindi,
-                    maths: maths,
-                    physics: physics,
-                    chemistry: chemistry,
-                    socialScience: socialScience,
-                    biology: biology
-                });
-                alert('റിസൾട്ട് വിജയകരമായി അപ്‌ലോഡ് ചെയ്തു! 🎉');
-                form.reset();
-            } catch (error) {
-                console.error("Error adding document: ", error);
-                alert('എറർ വന്നിട്ടുണ്ട്, ഒന്നിുകൂടി നോക്കുക.');
-            }
-        });
-    </script>
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    function showToast(msg, kind){
+      toast.className = kind;
+      toastMsg.textContent = msg;
+      requestAnimationFrame(() => toast.classList.add('show', kind));
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    const form = document.getElementById('resultForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const classSelect = document.getElementById('studentClass');
+    const markRows = document.querySelectorAll('.mark-row[data-subject-for]');
+
+    // classNumber -> which subject-tagged rows should be visible
+    function classNumberFromCollection(collectionName){
+      const match = collectionName.match(/class(\d+)_results/);
+      return match ? match[1] : null;
+    }
+
+    function applyClassVisibility(){
+      const classNum = classNumberFromCollection(classSelect.value);
+      markRows.forEach((row) => {
+        const forClasses = row.dataset.subjectFor.split(',');
+        const shouldShow = classNum && forClasses.includes(classNum);
+        row.classList.toggle('is-hidden', !shouldShow);
+      });
+    }
+    classSelect.addEventListener('change', applyClassVisibility);
+    applyClassVisibility();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const selectedClass = classSelect.value;
+      const classNum = classNumberFromCollection(selectedClass);
+      const rollNumber = document.getElementById('rollNumber').value.trim();
+      const name = document.getElementById('name').value.trim().toLowerCase();
+      const malayalam1 = document.getElementById('malayalam1').value.trim();
+      const malayalam2 = document.getElementById('malayalam2').value.trim();
+      const english = document.getElementById('english').value.trim();
+      const hindi = document.getElementById('hindi').value.trim();
+      const maths = document.getElementById('maths').value.trim();
+      const socialScience = document.getElementById('socialScience').value.trim();
+
+      const resultData = {
+        rollNumber: rollNumber,
+        name: name,
+        malayalam1: malayalam1,
+        malayalam2: malayalam2,
+        english: english,
+        hindi: hindi,
+        maths: maths,
+        socialScience: socialScience
+      };
+
+      if (classNum === '7') {
+        resultData.science = document.getElementById('science').value.trim();
+      } else {
+        resultData.physics = document.getElementById('physics').value.trim();
+        resultData.chemistry = document.getElementById('chemistry').value.trim();
+        resultData.biology = document.getElementById('biology').value.trim();
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Uploading…';
+
+      try {
+        await addDoc(collection(db, selectedClass), resultData);
+        showToast('റിസൾട്ട് വിജയകരമായി അപ്‌ലോഡ് ചെയ്തു! 🎉', 'ok');
+        form.reset();
+        applyClassVisibility();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        showToast('എറർ വന്നിട്ടുണ്ട്, ഒന്നുകൂടി നോക്കുക.', 'err');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Upload Result';
+      }
+    });
+  </script>
 </body>
 </html>
