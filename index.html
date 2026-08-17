@@ -242,7 +242,66 @@
     letter-spacing:.3px;
   }
 
-  /* ---- Toast ---- */
+  /* ---- Login ---- */
+  .login-sheet{
+    width:100%;
+    max-width:380px;
+    background:var(--parchment);
+    border-radius:var(--radius);
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.55);
+    overflow:hidden;
+    border:1px solid rgba(200,153,46,.25);
+  }
+  .login-sheet .sheet-inner{padding:28px 26px;}
+  .login-sheet h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px;
+    text-align:center;
+    color:var(--ink);
+    margin:0 0 18px;
+  }
+  .login-sheet .field{margin-bottom:14px;}
+  .login-error{
+    color:var(--err);
+    font-size:12.5px;
+    text-align:center;
+    margin-top:10px;
+    min-height:16px;
+  }
+  .logout-btn{
+    margin-top:16px;
+    background:none;
+    border:1px solid rgba(200,153,46,.4);
+    color:#c9d2e0;
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:.4px;
+    cursor:pointer;
+  }
+  .field.pw-field{position:relative;}
+  .field.pw-field input{padding-right:40px;}
+  .pw-toggle{
+    position:absolute;
+    right:8px;
+    top:29px;
+    width:26px;
+    height:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:var(--text-soft);
+    padding:0;
+  }
+  .pw-toggle:hover{color:var(--gold-deep);}
+  .pw-toggle svg{width:19px;height:19px;}
+
+  .is-hidden-block{display:none !important;}
+
+
   #toast{
     position:fixed;
     left:50%;
@@ -279,9 +338,36 @@
     <h1>LS Tuition</h1>
     <div class="tagline">Inspiring Success, Shaping Futures</div>
     <div class="panel-label">Result Admin Panel</div>
+    <button type="button" class="logout-btn is-hidden-block" id="logoutBtn">Logout</button>
   </div>
 
-  <div class="sheet">
+  <!-- Login Screen -->
+  <div class="login-sheet" id="loginSheet">
+    <div class="sheet-top"></div>
+    <div class="sheet-inner">
+      <h2>Admin Login</h2>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" required placeholder="username" autocomplete="username">
+        </div>
+        <div class="field pw-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+        <button type="submit" class="submit" id="loginBtn">Login</button>
+        <div class="login-error" id="loginError"></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="sheet is-hidden-block" id="mainSheet">
     <div class="sheet-top"></div>
     <div class="sheet-inner">
       <form id="resultForm">
@@ -358,8 +444,8 @@
     </div>
   </div>
 
-  <footer>© LS Tuition — Result records are stored securely on Firebase</footer>
-   <p style="text-align:center; color:#5c6a82; font-size:11px; margin-top:6px; letter-spacing:.3px;">Developed by <strong>SREENAND</strong></p>
+<footer>© LS Tuition — Result records are stored securely on Firebase</footer>
+  <p style="text-align:center; color:#5c6a82; font-size:11px; margin-top:6px; letter-spacing:.3px;">Developed by <strong>SREENAND</p>
   <div id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
 
   <!-- Firebase SDK & Script -->
@@ -379,6 +465,66 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    // Fixed admin credentials (client-side check).
+    const ADMIN_USERNAME = "ls Academy";
+    const ADMIN_PASSWORD = "leenasugi";
+
+    const loginSheet = document.getElementById('loginSheet');
+    const mainSheet = document.getElementById('mainSheet');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+
+    function showAdmin(){
+      loginSheet.classList.add('is-hidden-block');
+      mainSheet.classList.remove('is-hidden-block');
+      logoutBtn.classList.remove('is-hidden-block');
+    }
+    function showLogin(){
+      loginSheet.classList.remove('is-hidden-block');
+      mainSheet.classList.add('is-hidden-block');
+      logoutBtn.classList.add('is-hidden-block');
+    }
+
+    if (sessionStorage.getItem('lsAdminLoggedIn') === 'true') {
+      showAdmin();
+    } else {
+      showLogin();
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loginError.textContent = '';
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        sessionStorage.setItem('lsAdminLoggedIn', 'true');
+        loginForm.reset();
+        showAdmin();
+      } else {
+        loginError.textContent = 'Username അല്ലെങ്കിൽ password തെറ്റാണ്.';
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('lsAdminLoggedIn');
+      showLogin();
+    });
+
+    const pwToggle = document.getElementById('pwToggle');
+    const pwInput = document.getElementById('loginPassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const EYE_OPEN = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle>';
+    const EYE_CLOSED = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.9 19.9 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a19.86 19.86 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+    pwToggle.addEventListener('click', () => {
+      const showing = pwInput.type === 'text';
+      pwInput.type = showing ? 'password' : 'text';
+      eyeIcon.innerHTML = showing ? EYE_OPEN : EYE_CLOSED;
+      pwToggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+    });
 
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toastMsg');
