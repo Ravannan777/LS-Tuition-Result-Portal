@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LS Tuition — Result Admin</title>
 <link rel="icon" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4CAF50">
+<link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manjari:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -48,18 +51,31 @@
     text-align:center;
     margin-bottom:28px;
   }
+  .brand-row{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:14px;
+  }
   .brand img{
-    width:74px;height:74px;
+    width:58px;height:58px;
     object-fit:contain;
     filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
+    flex:none;
+  }
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    text-align:left;
   }
   .brand h1{
     font-family:'Cormorant Garamond',serif;
     font-weight:700;
-    font-size:32px;
+    font-size:30px;
     letter-spacing:.5px;
     color:var(--gold-bright);
-    margin:10px 0 2px;
+    margin:0 0 2px;
   }
   .brand .tagline{
     font-size:11px;
@@ -334,9 +350,13 @@
 <body>
 
   <div class="brand">
-    <img src="logo.png" alt="LS Tuition crest">
-    <h1>LS Tuition</h1>
-    <div class="tagline">Inspiring Success, Shaping Futures</div>
+    <div class="brand-row">
+      <img src="logo.png" alt="LS Tuition crest">
+      <div class="brand-text">
+        <h1>LS Tuition</h1>
+        <div class="tagline">Inspiring Success, Shaping Futures</div>
+      </div>
+    </div>
     <div class="panel-label">Result Admin Panel</div>
     <button type="button" class="logout-btn is-hidden-block" id="logoutBtn">Logout</button>
   </div>
@@ -465,6 +485,15 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    // Register Service Worker for offline/PWA support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch((err) => {
+          console.error('Service worker registration failed:', err);
+        });
+      });
+    }
 
     // Fixed admin credentials (client-side check).
     const ADMIN_USERNAME = "ls Academy";
