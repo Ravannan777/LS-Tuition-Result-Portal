@@ -1,12 +1,12 @@
-const CACHE_NAME = 'ls-tuition-v1.04';
+const CACHE_NAME = 'ls-tuition-v1.05';
 const assetsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/manifest.json',
-  '/logo.png',
-  '/icon-192.png',
-  '/icon-512.png'
+  './',
+  './index.html',
+  './style.css',
+  './manifest.json',
+  './logo.png',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 // Install: pre-cache the app shell
@@ -54,7 +54,7 @@ self.addEventListener('fetch', (e) => {
       }).catch(() => {
         // Optional: fall back to the main page when offline and page not cached
         if (e.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         }
       });
     })
