@@ -19,7 +19,7 @@
 </head>
 <body>
 
-  <div class="brand">
+  <div class="brand reveal">
     <div class="brand-row">
       <img src="logo.png" alt="LS Tuition crest">
       <div class="brand-text">
@@ -27,37 +27,11 @@
         <div class="tagline">Inspiring Success, Shaping Futures</div>
       </div>
     </div>
-    <div class="panel-label">Result Admin Panel</div>
-    <button type="button" class="logout-btn is-hidden-block" id="logoutBtn">Logout</button>
   </div>
 
-  <!-- Login Screen -->
-  <div class="login-sheet" id="loginSheet">
-    <div class="sheet-top"></div>
-    <div class="sheet-inner">
-      <h2>Admin Login</h2>
-      <form id="loginForm">
-        <div class="field">
-          <label for="loginUsername">Username</label>
-          <input type="text" id="loginUsername" required placeholder="username" autocomplete="username">
-        </div>
-        <div class="field pw-field">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
-          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password">
-            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </button>
-        </div>
-        <button type="submit" class="submit" id="loginBtn">Login</button>
-        <div class="login-error" id="loginError"></div>
-      </form>
-    </div>
-  </div>
+  <div class="admin-stack" id="mainSheet">
 
-  <div class="sheet is-hidden-block" id="mainSheet">
+    <div class="sheet reveal">
     <div class="sheet-top"></div>
     <div class="sheet-inner">
       <form id="resultForm">
@@ -132,16 +106,61 @@
         <button type="submit" class="submit" id="submitBtn">Upload Result</button>
       </form>
     </div>
+    </div>
+
+    <div class="sheet reveal">
+    <div class="sheet-top"></div>
+    <div class="sheet-inner">
+      <h2 class="section-title">Publish Notice</h2>
+      <form id="noticeForm">
+        <div class="field field-standalone">
+          <label for="noticeTitle">Notice Title</label>
+          <input type="text" id="noticeTitle" required placeholder="e.g., Exam Postponed">
+        </div>
+        <div class="field">
+          <label for="noticeDesc">Notice Details</label>
+          <textarea id="noticeDesc" rows="3" placeholder="Enter details here..."></textarea>
+        </div>
+        <button type="submit" class="submit" id="noticeSubmitBtn">Publish Notice</button>
+      </form>
+    </div>
+    </div>
+
+    <div class="sheet reveal">
+    <div class="sheet-top"></div>
+    <div class="sheet-inner">
+      <h2 class="section-title">Update Timetable</h2>
+      <form id="timetableForm">
+        <div class="field field-standalone">
+          <label for="ttClass">Select Class</label>
+          <select id="ttClass" required>
+            <option value="Class 5">Class 5</option>
+            <option value="Class 6">Class 6</option>
+            <option value="Class 7">Class 7</option>
+            <option value="Class 8">Class 8</option>
+            <option value="Class 9">Class 9</option>
+            <option value="Class 10">Class 10</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="ttDetails">Subject & Time Details</label>
+          <input type="text" id="ttDetails" required placeholder="e.g., Maths - 5:00 PM to 6:30 PM">
+        </div>
+        <button type="submit" class="submit" id="ttSubmitBtn">Update Timetable</button>
+      </form>
+    </div>
+    </div>
+
   </div>
 
-<footer>© LS Tuition — Result records are stored securely on Firebase</footer>
+<footer class="reveal">© LS Tuition — Result records are stored securely on Firebase</footer>
   <p style="text-align:center; color:#5c6a82; font-size:11px; margin-top:6px; letter-spacing:.3px;">Developed by <strong>SREENAND</p>
   <div id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
 
   <!-- Firebase SDK & Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC_hjdAHD11DPLXGC-wC1sltAAlunrG1XE",
@@ -165,65 +184,17 @@
       });
     }
 
-    // Fixed admin credentials (client-side check).
-    const ADMIN_USERNAME = "ls Academy";
-    const ADMIN_PASSWORD = "leenasugi";
-
-    const loginSheet = document.getElementById('loginSheet');
-    const mainSheet = document.getElementById('mainSheet');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const loginForm = document.getElementById('loginForm');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginError = document.getElementById('loginError');
-
-    function showAdmin(){
-      loginSheet.classList.add('is-hidden-block');
-      mainSheet.classList.remove('is-hidden-block');
-      logoutBtn.classList.remove('is-hidden-block');
-    }
-    function showLogin(){
-      loginSheet.classList.remove('is-hidden-block');
-      mainSheet.classList.add('is-hidden-block');
-      logoutBtn.classList.add('is-hidden-block');
-    }
-
-    if (sessionStorage.getItem('lsAdminLoggedIn') === 'true') {
-      showAdmin();
-    } else {
-      showLogin();
-    }
-
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      loginError.textContent = '';
-      const username = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value;
-
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        sessionStorage.setItem('lsAdminLoggedIn', 'true');
-        loginForm.reset();
-        showAdmin();
-      } else {
-        loginError.textContent = 'Username അല്ലെങ്കിൽ password തെറ്റാണ്.';
-      }
-    });
-
-    logoutBtn.addEventListener('click', () => {
-      sessionStorage.removeItem('lsAdminLoggedIn');
-      showLogin();
-    });
-
-    const pwToggle = document.getElementById('pwToggle');
-    const pwInput = document.getElementById('loginPassword');
-    const eyeIcon = document.getElementById('eyeIcon');
-    const EYE_OPEN = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle>';
-    const EYE_CLOSED = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.9 19.9 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a19.86 19.86 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-    pwToggle.addEventListener('click', () => {
-      const showing = pwInput.type === 'text';
-      pwInput.type = showing ? 'password' : 'text';
-      eyeIcon.innerHTML = showing ? EYE_OPEN : EYE_CLOSED;
-      pwToggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
-    });
+    // Scroll-reveal animation: fade/slide each card in as it enters view
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach((el) => revealObserver.observe(el));
 
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toastMsg');
@@ -304,6 +275,90 @@
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Upload Result';
+      }
+    });
+
+    // ---- Notification sound (played when a timetable update is posted) ----
+    function playNotificationSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5 note
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.3);
+      } catch (e) {
+        console.log("Audio play blocked by browser policy");
+      }
+    }
+
+    // ---- Publish Notice ----
+    const noticeForm = document.getElementById('noticeForm');
+    const noticeSubmitBtn = document.getElementById('noticeSubmitBtn');
+
+    noticeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('noticeTitle').value.trim();
+      const desc = document.getElementById('noticeDesc').value.trim();
+
+      if (!title) return;
+
+      noticeSubmitBtn.disabled = true;
+      noticeSubmitBtn.textContent = 'Publishing…';
+
+      try {
+        await addDoc(collection(db, 'notices'), {
+          title: title,
+          description: desc,
+          timestamp: serverTimestamp()
+        });
+        noticeForm.reset();
+        showToast('അറിയിപ്പ് വിജയകരമായി പോസ്റ്റ് ചെയ്തു! 🎉', 'ok');
+      } catch (error) {
+        console.error('Error publishing notice: ', error);
+        showToast('നോട്ടീസ് അയക്കാൻ സാധിച്ചില്ല.', 'err');
+      } finally {
+        noticeSubmitBtn.disabled = false;
+        noticeSubmitBtn.textContent = 'Publish Notice';
+      }
+    });
+
+    // ---- Update Timetable ----
+    const timetableForm = document.getElementById('timetableForm');
+    const ttSubmitBtn = document.getElementById('ttSubmitBtn');
+
+    timetableForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const selectedClass = document.getElementById('ttClass').value;
+      const details = document.getElementById('ttDetails').value.trim();
+
+      if (!details) return;
+
+      ttSubmitBtn.disabled = true;
+      ttSubmitBtn.textContent = 'Updating…';
+
+      try {
+        await addDoc(collection(db, 'timetable'), {
+          class: selectedClass,
+          details: details,
+          timestamp: serverTimestamp()
+        });
+        timetableForm.reset();
+        playNotificationSound();
+        showToast(`${selectedClass} ടൈംടേബിൾ അപ്‌ഡേറ്റ് ചെയ്തു! 🎉`, 'ok');
+      } catch (error) {
+        console.error('Error updating timetable: ', error);
+        showToast('ടൈംടേബിൾ മാറ്റാൻ സാധിച്ചില്ല.', 'err');
+      } finally {
+        ttSubmitBtn.disabled = false;
+        ttSubmitBtn.textContent = 'Update Timetable';
       }
     });
   </script>
