@@ -119,18 +119,30 @@
     color:#a9b8ac;
     font-weight:600;
   }
-  .brand .panel-label{
-    margin-top:16px;
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    color:#e7dcc0;
-    background:linear-gradient(180deg, rgba(182,137,61,.16), rgba(182,137,61,.06));
-    border:1px solid var(--gold-hairline);
-    padding:6px 18px;
-    border-radius:999px;
-    letter-spacing:2px;
-    text-transform:uppercase;
+
+  /* ---- Back button (result / notice / timetable pages) ---- */
+  .back-btn-row{
+    width:100%;
+    max-width:640px;
+    margin-bottom:16px;
   }
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.4px;
+    color:var(--gold-bright);
+    background:rgba(182,137,61,.12);
+    border:1px solid var(--gold-hairline);
+    padding:8px 16px;
+    border-radius:999px;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .back-btn:hover{ background:rgba(182,137,61,.22); transform:translateX(-2px); }
 
   /* ---- Card (certificate framing) ---- */
   .sheet{
@@ -156,6 +168,7 @@
       calc(100% - 12px) 12px,
       12px calc(100% - 12px),
       calc(100% - 12px) calc(100% - 12px);
+    transition:transform .2s ease, box-shadow .2s ease;
   }
   .sheet-top{
     height:6px;
@@ -168,6 +181,64 @@
     50%{background-position:100% 0%;}
   }
   .sheet-inner{padding:34px 32px 28px;}
+
+  /* ---- Menu cards (main admin landing page) ---- */
+  a.sheet{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+    cursor:pointer;
+  }
+  a.sheet:hover{
+    transform:translateY(-3px);
+    box-shadow:0 34px 80px -20px rgba(0,0,0,.65), 0 2px 0 rgba(255,255,255,.06) inset;
+  }
+  a.sheet .sheet-inner{ padding:24px 26px; }
+  .menu-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .menu-left{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .menu-badge{
+    width:46px;height:46px;
+    border-radius:13px;
+    flex:none;
+    background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+    color:#231a08;
+    font-family:'Cormorant Garamond',serif;
+    font-weight:700;
+    font-size:21px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 18px -6px rgba(138,101,38,.6);
+  }
+  .menu-text h3{
+    font-family:'Cormorant Garamond',serif;
+    font-size:20px;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 3px;
+  }
+  .menu-text p{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin:0;
+  }
+  .menu-arrow{
+    font-size:26px;
+    line-height:1;
+    color:var(--gold-deep);
+    transition:transform .2s ease;
+    flex:none;
+  }
+  a.sheet:hover .menu-arrow{ transform:translateX(5px); }
 
   .section-title{
     font-family:'Cormorant Garamond',serif;
@@ -251,7 +322,7 @@
   }
   .field-standalone{margin-bottom:16px;}
 
-  /* ---- Stack of admin cards (result / notice / timetable) ---- */
+  /* ---- Stack of admin cards ---- */
   .admin-stack{
     width:100%;
     max-width:640px;
@@ -349,73 +420,6 @@
     font-size:11.5px;
     letter-spacing:.6px;
   }
-
-  /* ---- Login ---- */
-  .login-sheet{
-    position:relative;
-    width:100%;
-    max-width:380px;
-    background:var(--parchment);
-    border-radius:var(--radius);
-    box-shadow:0 28px 70px -22px rgba(0,0,0,.6);
-    overflow:hidden;
-    border:1px solid var(--gold-hairline);
-    outline:1px solid rgba(182,137,61,.16);
-    outline-offset:5px;
-  }
-  .login-sheet .sheet-inner{padding:30px 28px;}
-  .login-sheet h2{
-    font-family:'Cormorant Garamond',serif;
-    font-size:23px;
-    text-align:center;
-    color:var(--ink);
-    margin:0 0 20px;
-    letter-spacing:.3px;
-  }
-  .login-sheet .field{margin-bottom:15px;}
-  .login-error{
-    color:var(--err);
-    font-size:12.5px;
-    text-align:center;
-    margin-top:10px;
-    min-height:16px;
-  }
-  .logout-btn{
-    margin-top:18px;
-    background:none;
-    border:1px solid var(--gold-hairline);
-    color:#dcd3bd;
-    padding:7px 18px;
-    border-radius:999px;
-    font-size:11.5px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:border-color .15s, color .15s;
-  }
-  .logout-btn:hover{border-color:var(--gold); color:var(--gold-bright);}
-  .field.pw-field{position:relative;}
-  .field.pw-field input{padding-right:40px;}
-  .pw-toggle{
-    position:absolute;
-    right:8px;
-    top:29px;
-    width:26px;
-    height:26px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:none;
-    border:none;
-    cursor:pointer;
-    color:var(--text-soft);
-    padding:0;
-  }
-  .pw-toggle:hover{color:var(--gold-deep);}
-  .pw-toggle svg{width:19px;height:19px;}
-
-  .is-hidden-block{display:none !important;}
-
 
   #toast{
     position:fixed;

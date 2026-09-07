@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - LS Tuition</title>
+    <style>
+        :root {
+            --bg-primary: #071f15;
+            --bg-card: #f9f6ed;
+            --accent-gold: #c5a059;
+            --accent-gold-dark: #a3813c;
+            --text-dark: #2c2c2c;
+            --text-light: #666666;
+            --border-color: #e2d9c2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--bg-card);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .header-container {
+            text-align: center;
+            margin: 30px 0 20px 0;
+        }
+
+        .logo-box {
+            background-color: #ffffff;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px auto;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .logo-box span {
+            color: var(--accent-gold);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            letter-spacing: 1.5px;
+            color: var(--bg-card);
+            margin-bottom: 4px;
+        }
+
+        .tagline {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #d1c29b;
+        }
+
+        .main-card {
+            background-color: var(--bg-card);
+            color: var(--text-dark);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .help-item {
+            background: #fff;
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .help-item h3 {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .help-item p {
+            font-size: 13px;
+            margin: 0;
+            color: var(--text-light);
+        }
+
+        .contact-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .contact-box h3 {
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .social-btn {
+            background: var(--bg-primary);
+            color: var(--bg-card);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent-gold-dark);
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(to bottom, #d4b26c, #b58d43);
+            color: #ffffff;
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(to bottom, #c2a059, #a37c37);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #a3c2b2;
+            width: 100%;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer a {
+            color: #d1c29b;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            .help-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="logo-box">
+            <span>LS</span>
+        </div>
+        <h1>LS Tuition</h1>
+        <div class="tagline">Inspiring Success, Shaping Futures</div>
+    </div>
+
+    <div class="main-card">
+        <div class="section-title">Help & Support Center</div>
+        <p>
+            Welcome to the LS Tuition Help Center. Here you can find guidance on how to navigate the platform, manage student results, publish notices, update timetables, and connect directly with the developer for technical assistance.
+        </p>
+
+        <div class="help-grid">
+            <div class="help-item">
+                <h3>1. Result Panel Guidance</h3>
+                <p>Select the appropriate class, enter the correct student roll number and name, input respective subject marks, and click 'Upload Result' to sync securely with Firebase.</p>
+            </div>
+            <div class="help-item">
+                <h3>2. Notice Panel Usage</h3>
+                <p>Provide a clear notice title followed by detailed descriptions in the text box. Click 'Publish Notice' to broadcast institutional updates instantly.</p>
+            </div>
+            <div class="help-item">
+                <h3>3. Timetable Management</h3>
+                <p>Choose the target class from the dropdown menu, enter structured subject and time details, and click 'Update Timetable' to keep schedules current.</p>
+            </div>
+            <div class="help-item">
+                <h3>4. System & Cloud Sync</h3>
+                <p>All records are stored securely on Firebase. Ensure an active internet connection during data submission to prevent synchronization errors.</p>
+            </div>
+        </div>
+
+        <div class="contact-box">
+            <h3>Developer Support & Contact</h3>
+            <div class="contact-details">
+                <p style="margin: 0; color: var(--text-dark);"><strong>Developer Name:</strong> Sreenand</p>
+                <p style="margin: 0; color: var(--text-dark);"><strong>Phone:</strong> <a href="tel:8289804072" style="color: var(--accent-gold-dark); text-decoration: none;">8289804072</a></p>
+                <p style="margin: 0; color: var(--text-dark);"><strong>Email:</strong> <a href="mailto:support@lstuition.app" style="color: var(--accent-gold-dark); text-decoration: none;">support@lstuition.app</a></p>
+            </div>
+            <p style="font-size: 13px; margin-bottom: 10px;">Connect with the developer across platforms:</p>
+            <div class="social-links">
+                <a href=" https://wa.me/qr/SLD67ZVGI7LNA1" target="_blank" class="social-btn">WhatsApp</a>
+                <a href="https://www.instagram.com/srxx_nand/" target="_blank" class="social-btn">Instagram</a>
+                <a href="https://github.com/Ravannan777/" target="_blank" class="social-btn">GitHub</a>
+                <a href="https://www.facebook.com/profile.php?id=61574073736998" target="_blank" class="social-btn">Facebook</a>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="help.html">Help</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="https://ls-academy.web.app" target="_blank">LS Academy</a>
+            <a href="https://skycast.web.app" target="_blank">Skycast (PWA)</a>
+        </div>
+        <p>&copy; 2026 LS Tuition &mdash; Developed by Sreenand</p>
+        <p style="margin-top: 5px;">Server Running on <a href="https://firebase.google.com/" target="_blank">Firebase</a></p>
+    </footer>
+
+</body>
+</html>

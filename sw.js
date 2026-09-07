@@ -1,12 +1,17 @@
-const CACHE_NAME = 'ls-tuition-v1.05';
+const CACHE_NAME = 'ls-tuition-v2.0';
 const assetsToCache = [
   './',
   './index.html',
+  './result.html',
+  './notice.html',
+  './timetable.html',
   './style.css',
+  './firebase-init.mjs',
   './manifest.json',
   './logo.png',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './icon-maskable-512.png'
 ];
 
 // Install: pre-cache the app shell

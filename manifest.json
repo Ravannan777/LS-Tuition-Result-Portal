@@ -1,7 +1,8 @@
 {
-  "name": "LS Tuition Result Portal",
-  "short_name": "LS Tuition",
-  "description": "LS Tuition – Result Admin Portal",
+  "name": "LS Academy Result Portal",
+  "short_name": "LS Academy",
+  "description": "LS Academy – Result Admin Portal",
+  "version": "2.3v",
   "id": ".",
   "start_url": "./index.html",
   "scope": "./",

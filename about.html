@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - LS Tuition</title>
+    <style>
+        :root {
+            --bg-primary: #071f15;
+            --bg-card: #f9f6ed;
+            --accent-gold: #c5a059;
+            --accent-gold-dark: #a3813c;
+            --text-dark: #2c2c2c;
+            --text-light: #666666;
+            --border-color: #e2d9c2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--bg-card);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .header-container {
+            text-align: center;
+            margin: 30px 0 20px 0;
+        }
+
+        .logo-box {
+            background-color: #ffffff;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px auto;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .logo-box span {
+            color: var(--accent-gold);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            letter-spacing: 1.5px;
+            color: var(--bg-card);
+            margin-bottom: 4px;
+        }
+
+        .tagline {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #d1c29b;
+        }
+
+        .main-card {
+            background-color: var(--bg-card);
+            color: var(--text-dark);
+            width: 100%;
+            max-width: 750px;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-item h3 {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .feature-item p {
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(to bottom, #d4b26c, #b58d43);
+            color: #ffffff;
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(to bottom, #c2a059, #a37c37);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #a3c2b2;
+            width: 100%;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer a {
+            color: #d1c29b;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="logo-box">
+            <span>LS</span>
+        </div>
+        <h1>LS Tuition</h1>
+        <div class="tagline">Inspiring Success, Shaping Futures</div>
+    </div>
+
+    <div class="main-card">
+        <div class="section-title">About LS Tuition (PWA App)</div>
+        <p>
+            <strong>LS Tuition</strong> is a progressive web application (PWA) specifically designed for students, teachers, and administrators to streamline academic tracking, result management, notices, and class schedules in a unified interface.
+        </p>
+        <p>
+            Built with modern web technologies and secured by Firebase cloud storage, our platform guarantees real-time synchronization, instant data loading, and seamless accessibility across mobile and desktop devices.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <h3>Result Panel</h3>
+                <p>Upload and manage student term marks efficiently with structured grading inputs.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Notice Panel</h3>
+                <p>Publish instant institutional announcements and updates directly to students.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Timetable Panel</h3>
+                <p>Organize and update class schedules seamlessly across different batches.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Firebase Cloud</h3>
+                <p>Secure, fast, and reliable cloud database architecture ensuring data integrity.</p>
+            </div>
+        </div>
+
+        <p>
+            Developed with dedication by <strong>Sreenand</strong>, LS Tuition continues to bridge the gap between traditional learning administration and modern digital efficiency.
+        </p>
+
+        <a href="index.html" class="back-btn">Back to Dashboard</a>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="help.html">Help</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="https://ls-academy.web.app" target="_blank">LS Academy</a>
+            <a href="https://skycast.web.app" target="_blank">Skycast (PWA)</a>
+        </div>
+        <p>&copy; 2026 LS Tuition &mdash; Developed by Sreenand</p>
+        <p style="margin-top: 5px;">Server Running on <a href="https://firebase.google.com/" target="_blank">Firebase</a></p>
+    </footer>
+
+</body>
+</html>

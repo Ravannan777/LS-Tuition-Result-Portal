@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timetable Panel | LS Tuition</title>
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1a13">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manjari:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="back-btn-row reveal">
+    <a href="index.html" class="back-btn">&larr; Back to Panel</a>
+  </div>
+
+  <div class="brand reveal">
+    <div class="brand-row">
+      <img src="icon-192.png" alt="LS Tuition crest">
+      <div class="brand-text">
+        <h1>LS Tuition</h1>
+        <div class="tagline">Timetable Panel</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-stack">
+    <div class="sheet reveal">
+    <div class="sheet-top"></div>
+    <div class="sheet-inner">
+      <h2 class="section-title">Update Timetable</h2>
+      <form id="timetableForm">
+        <div class="field field-standalone">
+          <label for="ttClass">Select Class</label>
+          <select id="ttClass" required>
+            <option value="Class 5">Class 5</option>
+            <option value="Class 6">Class 6</option>
+            <option value="Class 7">Class 7</option>
+            <option value="Class 8">Class 8</option>
+            <option value="Class 9">Class 9</option>
+            <option value="Class 10">Class 10</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="ttDetails">Subject & Time Details</label>
+          <input type="text" id="ttDetails" required placeholder="e.g., Maths - 5:00 PM to 6:30 PM">
+        </div>
+        <button type="submit" class="submit" id="ttSubmitBtn">Update Timetable</button>
+      </form>
+    </div>
+    </div>
+  </div>
+
+<footer class="reveal">© LS Tuition — Result records are stored securely on Firebase</footer>
+
+  <div id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
+
+  <script type="module">
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { db } from "./firebase-init.mjs";
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch((err) => {
+          console.error('Service worker registration failed:', err);
+        });
+      });
+    }
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach((el) => revealObserver.observe(el));
+
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    function showToast(msg, kind){
+      toast.className = kind;
+      toastMsg.textContent = msg;
+      requestAnimationFrame(() => toast.classList.add('show', kind));
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    // ---- Notification sound (played when a timetable update is posted) ----
+    function playNotificationSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5 note
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.3);
+      } catch (e) {
+        console.log("Audio play blocked by browser policy");
+      }
+    }
+
+    const timetableForm = document.getElementById('timetableForm');
+    const ttSubmitBtn = document.getElementById('ttSubmitBtn');
+
+    timetableForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const selectedClass = document.getElementById('ttClass').value;
+      const details = document.getElementById('ttDetails').value.trim();
+
+      if (!details) return;
+
+      ttSubmitBtn.disabled = true;
+      ttSubmitBtn.textContent = 'Updating…';
+
+      try {
+        await addDoc(collection(db, 'timetable'), {
+          class: selectedClass,
+          details: details,
+          timestamp: serverTimestamp()
+        });
+        timetableForm.reset();
+        playNotificationSound();
+        showToast(`${selectedClass} ടൈംടേബിൾ അപ്‌ഡേറ്റ് ചെയ്തു! 🎉`, 'ok');
+      } catch (error) {
+        console.error('Error updating timetable: ', error);
+        showToast('ടൈംടേബിൾ മാറ്റാൻ സാധിച്ചില്ല.', 'err');
+      } finally {
+        ttSubmitBtn.disabled = false;
+        ttSubmitBtn.textContent = 'Update Timetable';
+      }
+    });
+  </script>
+</body>
+</html>
